@@ -2,22 +2,27 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [formData, setFormData] = useState({ name: '', phone: '' });
+  const { toast } = useToast();
 
   const services = [
     {
       icon: "Wrench",
       title: "Установка",
       description: "Профессиональный монтаж сплит-систем любой сложности с гарантией качества",
-      price: "от 3 500 ₽"
+      price: "от 8 000 ₽"
     },
     {
       icon: "Sparkles",
       title: "Чистка",
       description: "Глубокая очистка внутренних и внешних блоков кондиционера",
-      price: "от 2 000 ₽"
+      price: "от 3 000 ₽"
     },
     {
       icon: "Settings",
@@ -29,19 +34,13 @@ const Index = () => {
       icon: "Droplets",
       title: "Заправка фреоном",
       description: "Дозаправка и полная замена хладагента в системе",
-      price: "от 2 500 ₽"
+      price: "от 700 ₽/100г"
     },
     {
       icon: "Zap",
       title: "Ремонт",
       description: "Устранение неисправностей и замена комплектующих",
-      price: "от 1 800 ₽"
-    },
-    {
-      icon: "Wind",
-      title: "Вентиляция",
-      description: "Установка и обслуживание систем вентиляции",
-      price: "от 4 000 ₽"
+      price: "от 0 ₽"
     }
   ];
 
@@ -57,12 +56,54 @@ const Index = () => {
     {
       url: "https://cdn.poehali.dev/projects/956c7524-a90a-4f29-81e7-bfde7203a8ff/files/5fda8475-2ca9-4bb7-bee0-e10a2baf4368.jpg",
       title: "Монтаж внешнего блока"
+    },
+    {
+      url: "https://cdn.poehali.dev/projects/956c7524-a90a-4f29-81e7-bfde7203a8ff/files/5f8c84f4-6e76-4be0-9a07-394ea0cda30a.jpg",
+      title: "Обслуживание внутреннего блока"
+    },
+    {
+      url: "https://cdn.poehali.dev/projects/956c7524-a90a-4f29-81e7-bfde7203a8ff/files/cc83fc04-18fd-455c-9bb3-347c75ccb570.jpg",
+      title: "Ремонт компрессора"
+    },
+    {
+      url: "https://cdn.poehali.dev/projects/956c7524-a90a-4f29-81e7-bfde7203a8ff/files/200722fc-a6ef-4501-94b4-3f18d9cfa7d9.jpg",
+      title: "Готовая установка в интерьере"
     }
   ];
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: 'smooth' });
+    setMobileMenuOpen(false);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.phone) {
+      toast({ title: "Ошибка", description: "Заполните все поля", variant: "destructive" });
+      return;
+    }
+    
+    try {
+      const message = `🆕 Новая заявка с сайта!\n\n👤 Имя: ${formData.name}\n📞 Телефон: ${formData.phone}`;
+      const botToken = '7906763466:AAEb7vxwL3WHEn6ITGsL15N4pRX7K86YXv8';
+      const chatId = '431900446';
+      
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text: message })
+      });
+      
+      if (response.ok) {
+        toast({ title: "Успешно!", description: "Мы свяжемся с вами в ближайшее время" });
+        setFormData({ name: '', phone: '' });
+      } else {
+        throw new Error('Failed');
+      }
+    } catch (error) {
+      toast({ title: "Ошибка", description: "Попробуйте позвонить напрямую", variant: "destructive" });
+    }
   };
 
   return (
@@ -72,7 +113,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Icon name="Snowflake" className="text-primary" size={32} />
-              <span className="text-2xl font-bold text-primary">АстроКлимат</span>
+              <span className="text-2xl font-bold text-primary">ХолодОК</span>
             </div>
             <div className="hidden md:flex items-center gap-6">
               <button onClick={() => scrollToSection('services')} className="text-gray-700 hover:text-primary transition-colors">
@@ -91,11 +132,49 @@ const Index = () => {
                 Контакты
               </button>
             </div>
-            <Button size="lg" className="hidden md:flex">
-              <Icon name="Phone" className="mr-2" size={20} />
-              Позвонить
+            <a href="tel:+79371341627" className="hidden md:block">
+              <Button size="lg">
+                <Icon name="Phone" className="mr-2" size={20} />
+                Позвонить
+              </Button>
+            </a>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <Icon name={mobileMenuOpen ? "X" : "Menu"} size={24} />
             </Button>
           </div>
+          
+          {mobileMenuOpen && (
+            <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg animate-fade-in">
+              <div className="flex flex-col p-4 space-y-4">
+                <button onClick={() => scrollToSection('services')} className="text-left text-gray-700 hover:text-primary transition-colors py-2">
+                  Услуги
+                </button>
+                <button onClick={() => scrollToSection('gallery')} className="text-left text-gray-700 hover:text-primary transition-colors py-2">
+                  Галерея
+                </button>
+                <button onClick={() => scrollToSection('price')} className="text-left text-gray-700 hover:text-primary transition-colors py-2">
+                  Прайс
+                </button>
+                <button onClick={() => scrollToSection('about')} className="text-left text-gray-700 hover:text-primary transition-colors py-2">
+                  О нас
+                </button>
+                <button onClick={() => scrollToSection('contacts')} className="text-left text-gray-700 hover:text-primary transition-colors py-2">
+                  Контакты
+                </button>
+                <a href="tel:+79371341627" className="w-full">
+                  <Button size="lg" className="w-full">
+                    <Icon name="Phone" className="mr-2" size={20} />
+                    Позвонить
+                  </Button>
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -207,14 +286,14 @@ const Index = () => {
             <Card className="border-2">
               <CardContent className="p-0">
                 {[
-                  { service: "Установка настенной сплит-системы", price: "3 500 - 6 000 ₽" },
-                  { service: "Установка канальной системы", price: "от 12 000 ₽" },
-                  { service: "Чистка внутреннего блока", price: "1 500 - 2 500 ₽" },
-                  { service: "Чистка внешнего блока", price: "2 000 - 3 000 ₽" },
-                  { service: "Полное обслуживание системы", price: "3 500 - 5 000 ₽" },
-                  { service: "Заправка фреоном R-410A", price: "2 500 - 4 000 ₽" },
-                  { service: "Диагностика неисправностей", price: "1 000 ₽" },
-                  { service: "Ремонт электроники", price: "от 2 500 ₽" }
+                  { service: "Установка настенной сплит-системы", price: "от 8 000 ₽" },
+                  { service: "Установка канальной системы", price: "от 15 000 ₽" },
+                  { service: "Чистка внутреннего блока", price: "от 3 000 ₽" },
+                  { service: "Чистка внешнего блока", price: "от 3 000 ₽" },
+                  { service: "Полное обслуживание системы", price: "от 5 000 ₽" },
+                  { service: "Заправка фреоном (за 100 грамм)", price: "от 700 ₽" },
+                  { service: "Диагностика неисправностей", price: "Бесплатно" },
+                  { service: "Ремонт (в зависимости от поломки)", price: "от 0 ₽" }
                 ].map((item, index) => (
                   <div 
                     key={index}
@@ -256,7 +335,7 @@ const Index = () => {
             <Card className="p-8 border-2">
               <CardContent className="p-0">
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  АстроКлимат — динамично развивающаяся компания по установке и обслуживанию климатического оборудования в Астрахани. 
+                  ХолодОК — динамично развивающаяся компания по установке и обслуживанию климатического оборудования в Астрахани. 
                   Мы работаем на рынке более 5 лет и уже обслужили более 1000 довольных клиентов, 
                   зарекомендовав себя как надёжный партнёр для дома и бизнеса.
                 </p>
@@ -330,21 +409,27 @@ const Index = () => {
                 <p className="mb-6 opacity-90">
                   Оставьте заявку, и мы перезвоним вам в течение 15 минут
                 </p>
-                <div className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <input 
                     type="text" 
                     placeholder="Ваше имя"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
                     className="w-full px-4 py-3 rounded-lg text-gray-900"
+                    required
                   />
                   <input 
                     type="tel" 
                     placeholder="Телефон"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     className="w-full px-4 py-3 rounded-lg text-gray-900"
+                    required
                   />
-                  <Button className="w-full bg-white text-primary hover:bg-white/90 py-6">
+                  <Button type="submit" className="w-full bg-white text-primary hover:bg-white/90 py-6">
                     Отправить заявку
                   </Button>
-                </div>
+                </form>
               </CardContent>
             </Card>
           </div>
@@ -355,15 +440,15 @@ const Index = () => {
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Icon name="Snowflake" size={32} />
-            <span className="text-2xl font-bold">АстроКлимат</span>
+            <span className="text-2xl font-bold">ХолодОК</span>
           </div>
           <p className="text-gray-400 mb-4">
-            © 2024 АстроКлимат. Все права защищены.
+            © 2024 ХолодОК. Все права защищены.
           </p>
           <div className="flex justify-center gap-6">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+            <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors">
               Политика конфиденциальности
-            </a>
+            </Link>
             <a href="#" className="text-gray-400 hover:text-white transition-colors">
               Пользовательское соглашение
             </a>
