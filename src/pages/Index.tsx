@@ -72,7 +72,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Icon name="Snowflake" className="text-primary" size={32} />
-              <span className="text-2xl font-bold text-primary">КлиматСервис</span>
+              <span className="text-2xl font-bold text-primary">АстроКлимат</span>
             </div>
             <div className="hidden md:flex items-center gap-6">
               <button onClick={() => scrollToSection('services')} className="text-gray-700 hover:text-primary transition-colors">
@@ -241,11 +241,11 @@ const Index = () => {
             <h2 className="text-4xl font-bold text-center mb-12">О компании</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               <Card className="text-center p-8 border-2 hover:border-primary transition-colors">
-                <div className="text-5xl font-bold text-primary mb-2">15+</div>
+                <div className="text-5xl font-bold text-primary mb-2">5+</div>
                 <p className="text-gray-600">лет опыта</p>
               </Card>
               <Card className="text-center p-8 border-2 hover:border-primary transition-colors">
-                <div className="text-5xl font-bold text-secondary mb-2">3500+</div>
+                <div className="text-5xl font-bold text-secondary mb-2">1000+</div>
                 <p className="text-gray-600">довольных клиентов</p>
               </Card>
               <Card className="text-center p-8 border-2 hover:border-primary transition-colors">
@@ -256,9 +256,9 @@ const Index = () => {
             <Card className="p-8 border-2">
               <CardContent className="p-0">
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  КлиматСервис — ведущая компания по установке и обслуживанию климатического оборудования. 
-                  Мы работаем на рынке более 15 лет и зарекомендовали себя как надёжный партнёр для частных 
-                  клиентов и бизнеса.
+                  АстроКлимат — динамично развивающаяся компания по установке и обслуживанию климатического оборудования в Астрахани. 
+                  Мы работаем на рынке более 5 лет и уже обслужили более 1000 довольных клиентов, 
+                  зарекомендовав себя как надёжный партнёр для дома и бизнеса.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
@@ -291,8 +291,8 @@ const Index = () => {
                   </div>
                   <div>
                     <h3 className="font-bold mb-1">Телефон</h3>
-                    <p className="text-gray-600">+7 (495) 123-45-67</p>
-                    <p className="text-gray-600">+7 (926) 987-65-43</p>
+                    <p className="text-gray-600">+7 (937) 134-16-27</p>
+                    <p className="text-gray-600">+7 (917) 080-78-01</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -301,7 +301,7 @@ const Index = () => {
                   </div>
                   <div>
                     <h3 className="font-bold mb-1">Email</h3>
-                    <p className="text-gray-600">info@klimatservice.ru</p>
+                    <p className="text-gray-600">astraclimat@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -310,7 +310,7 @@ const Index = () => {
                   </div>
                   <div>
                     <h3 className="font-bold mb-1">Адрес</h3>
-                    <p className="text-gray-600">г. Москва, ул. Примерная, д. 123</p>
+                    <p className="text-gray-600">г. Астрахань</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -355,10 +355,10 @@ const Index = () => {
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Icon name="Snowflake" size={32} />
-            <span className="text-2xl font-bold">КлиматСервис</span>
+            <span className="text-2xl font-bold">АстроКлимат</span>
           </div>
           <p className="text-gray-400 mb-4">
-            © 2024 КлиматСервис. Все права защищены.
+            © 2024 АстроКлимат. Все права защищены.
           </p>
           <div className="flex justify-center gap-6">
             <a href="#" className="text-gray-400 hover:text-white transition-colors">
